@@ -8,27 +8,11 @@ use Inertia\Inertia;
 
 class UserController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function index()
     {
-        $users = User::query()
-            ->when(request()->search, function ($query, $search) {
-                $query->where(function ($query) use ($search) {
-                    $query->where('name', 'regexp', $search)
-                        ->orWhere('email', 'regexp', $search);
-                });
-            })
-            ->when(request()->user, function ($query, $user) {
-                if($user == 2) {
-                    $query->onlyTrashed();
-                }
-            }, function ($query) {
-                $query->withTrashed();
-            })
+        $users = $this->setQuery(User::query())
+            ->search()->filter()
+            ->getQuery()
             ->when(request()->from, function ($query, $date_from) {
                 $query->whereDate('created_at', '>=', $date_from);
             })
@@ -38,42 +22,20 @@ class UserController extends Controller
 
         return Inertia::render('User/Index', [
             'users' => $users->paginate(request()->perpage ?? 100)->onEachSide(1)->appends(request()->input()),
-            'filters' => [
-                'user' => [
-                    1 => 'Active User',
-                    2 => 'Trashed User'
-                ]
-            ],
+            'filters' => $this->getFilterProperty(),
         ]);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function create()
     {
         //
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
         //
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\User  $user
-     * @return \Illuminate\Http\Response
-     */
     public function show(User $user)
     {
         return Inertia::render('User/Show', [
@@ -81,37 +43,57 @@ class UserController extends Controller
         ]);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\User  $user
-     * @return \Illuminate\Http\Response
-     */
     public function edit(User $user)
     {
         //
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\User  $user
-     * @return \Illuminate\Http\Response
-     */
     public function update(Request $request, User $user)
     {
         //
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\User  $user
-     * @return \Illuminate\Http\Response
-     */
     public function destroy(User $user)
     {
         //
+    }
+
+    protected function search()
+    {
+        $this->getQuery()
+            ->when(request()->search, function ($query, $search) {
+                $query->where(function ($query) use ($search) {
+                    $query->where('name', 'regexp', $search)
+                        ->orWhere('email', 'regexp', $search);
+                });
+            });
+
+        return $this;
+    }
+
+    protected function filter()
+    {
+        $this->getQuery()
+            ->when(isset(request()->email_verified_status), function ($query) {
+                if (request()->email_verified_status == 1) {
+                    $query->whereNotNull('email_verified_at');
+                } 
+                
+                if (request()->email_verified_status == 0) {
+                    $query->whereNull('email_verified_at');
+                }
+            });
+
+        return $this;
+    }
+
+    protected function getFilterProperty()
+    {
+        return [
+            'email_verified_status' => [
+                1 => 'Email Verified',
+                0 => 'Email Not Verified',
+            ]
+        ];
     }
 }

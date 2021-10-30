@@ -42,4 +42,13 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    protected $appends = ['email_verified'];
+
+    public function getEmailVerifiedAttribute()
+    {
+        return $this->email_verified_at
+            ? $this->email_verified_at->diffForHumans()
+            : '';
+    }
 }

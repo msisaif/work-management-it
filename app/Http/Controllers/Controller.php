@@ -10,4 +10,18 @@ use Illuminate\Routing\Controller as BaseController;
 class Controller extends BaseController
 {
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
+
+    protected $query;
+
+    protected function getQuery()
+    {
+        return $this->query;
+    }
+
+    protected function setQuery($query)
+    {
+        $this->query = $query;
+        
+        return $this;
+    }
 }

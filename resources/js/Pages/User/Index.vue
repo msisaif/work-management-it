@@ -9,15 +9,15 @@
         <DataTable :collections="users" :filters="filters" :dateFilter="true" :serialColumn="true">
             <template #head>
                 <th class="py-3 px-2 text-left">ID</th>
-                <th class="py-3 px-2 text-center">Status</th>
+                <th class="py-3 px-2 text-center">Email Verified</th>
                 <th class="py-3 px-2 text-left">Name</th>
                 <th class="py-3 px-2 text-left">Email</th>
                 <th class="py-3 px-2 text-center">Action</th>
             </template>
             <template #default="{item: user}">
                 <td class="py-3 px-2 text-left">{{ user.id }}</td>
-                <td class="py-3 px-2 text-center" :class="{'text-red-500': user.deleted_at }">
-                    {{ user.deleted_at ? 'Trashed' : 'Active' }}
+                <td class="py-3 px-2 text-center">
+                    {{ user.email_verified }}
                 </td>
                 <td class="py-3 px-2 text-left">{{ user.name }}</td>
                 <td class="py-3 px-2 text-left">{{ user.email }}</td>

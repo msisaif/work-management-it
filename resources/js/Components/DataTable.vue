@@ -5,7 +5,7 @@
             <div class="flex" v-for="(filter, key) in filters" :key="key">
                 <select @change="searchHandler" v-model="filterData[key]" :name="key" class="block w-full rounded-md shadow-sm focus:outline-none focus:ring-0">
                     <option value="" selected>
-                        {{ key.replace('_', ' ').toLowerCase().replace(/\b[a-z]/g, function(letter) {
+                        {{ key.replaceAll('_', ' ').toLowerCase().replace(/\b[a-z]/g, function(letter) {
                             return letter.toUpperCase();
                         }) }} (All)
                     </option>
