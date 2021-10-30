@@ -3,22 +3,19 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Traits\DateFilter;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
 class UserController extends Controller
 {
+    use DateFilter;
+
     public function index()
     {
         $users = $this->setQuery(User::query())
-            ->search()->filter()
-            ->getQuery()
-            ->when(request()->from, function ($query, $date_from) {
-                $query->whereDate('created_at', '>=', $date_from);
-            })
-            ->when(request()->to, function ($query, $date_to) {
-                $query->whereDate('created_at', '<=', $date_to);
-            });
+            ->search()->filter()->dateFilter()
+            ->getQuery();
 
         return Inertia::render('User/Index', [
             'users' => $users->paginate(request()->perpage ?? 100)->onEachSide(1)->appends(request()->input()),
