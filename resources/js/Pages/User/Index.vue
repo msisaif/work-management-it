@@ -6,6 +6,12 @@
             User List
         </template>
 
+        <div class="w-full mb-4 flex">
+            <a :href="route('users.create')" class="text-center cursor-pointer border border-blue-600 text-white hover:bg-blue-700 bg-blue-600 rounded-md px-3 py-1.5">
+                + Add New
+            </a>
+        </div>
+
         <DataTable :collections="users" :filters="filters" :dateFilter="true" :serialColumn="true">
             <template #head>
                 <th class="py-3 px-2 text-left">ID</th>

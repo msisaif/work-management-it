@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use App\Traits\DateFilter;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\Rule;
 use Inertia\Inertia;
 
 class UserController extends Controller
@@ -25,12 +27,20 @@ class UserController extends Controller
 
     public function create()
     {
-        //
+        return Inertia::render('User/Create', [
+            'user' => new User(),
+        ]);
     }
 
     public function store(Request $request)
     {
-        //
+        $user = User::create($this->validateData($request) + [
+            'password' => Hash::make(123456),
+        ]);
+
+        return redirect()
+            ->route('users.show', $user->id)
+            ->with('status', 'The record has been added successfully.');
     }
 
     public function show(User $user)
@@ -42,17 +52,26 @@ class UserController extends Controller
 
     public function edit(User $user)
     {
-        //
+        return Inertia::render('User/Edit', [
+            'user' => $user,
+        ]);
     }
 
     public function update(Request $request, User $user)
     {
-        //
+        $user->update($this->validateData($request, $user->id));
+
+        return redirect()
+            ->route('users.show', $user->id)
+            ->with('status', 'The record has been update successfully.');
     }
 
     public function destroy(User $user)
     {
-        //
+        $user->delete();
+
+        return back()
+            ->with('status', 'The record has been delete successfully.');
     }
 
     protected function search()
@@ -92,5 +111,21 @@ class UserController extends Controller
                 0 => 'Email Not Verified',
             ]
         ];
+    }
+    
+    private function validateData($request, $id = '')
+    {
+        return $request->validate([
+            'name' => [
+                'required',
+                'string',
+            ],
+            'email' => [
+                'required',
+                'string',
+                'email',
+                Rule::unique(User::class, 'email')->ignore($id),
+            ],
+        ]);
     }
 }
