@@ -118,6 +118,7 @@ export default {
             data: {},
             dateFrom: '',
             dateTo: '',
+            sortBy: 'name',
         }
     },
     methods: {
@@ -131,6 +132,8 @@ export default {
             this.data['from'] = this.dateFrom;
 
             this.data['to'] = this.dateTo;
+
+            this.data['sort_by'] = this.sortBy;
 
             this.data['search'] = this.search;
 
