@@ -27,10 +27,11 @@
                 </td>
                 <td class="py-3 px-2 text-left">{{ user.name }}</td>
                 <td class="py-3 px-2 text-left">{{ user.email }}</td>
-                <td class="py-2.5 px-2 flex justify-center items-center gap-1 md:gap-2">
-                    <ActionButtonShow :href="route('users.show', user.id)" />
-                    <ActionButtonEdit :href="route('users.edit', user.id)" />
-                    <ActionButtonDelete :href="route('users.destroy', user.id)" />
+                <td class="py-2.5 px-2">
+                    <div class="flex justify-center items-center gap-1 md:gap-2">
+                        <ActionButtonShow :href="route('users.show', user.id)" />
+                        <ActionButtonEdit :href="route('users.edit', user.id)" />
+                    </div>
                 </td>
             </template>
         </DataTable>
@@ -43,7 +44,6 @@ import { Head, Link } from "@inertiajs/inertia-vue3";
 import DataTable from "@/Components/DataTable.vue";
 import ActionButtonShow from "@/Components/ActionButtonShow.vue";
 import ActionButtonEdit from "@/Components/ActionButtonEdit.vue";
-import ActionButtonDelete from "@/Components/ActionButtonDelete.vue";
 
 export default {
     components: {
@@ -53,7 +53,6 @@ export default {
         Link,
         ActionButtonShow,
         ActionButtonEdit,
-        ActionButtonDelete,
     },
     props: {
         users: { type: Object, default: {} },

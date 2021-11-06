@@ -118,7 +118,6 @@ export default {
             data: {},
             dateFrom: '',
             dateTo: '',
-            sortBy: 'name',
         }
     },
     methods: {
@@ -134,8 +133,6 @@ export default {
             this.data['to'] = this.dateTo;
 
             this.data['sort_by'] = this.sortBy;
-
-            this.data['search'] = this.search;
 
             this.$inertia.get(this.route((this.routeName || this.route().current()), this.clean(this.data)), {}, { preserveState: true })
         },
