@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\UserController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
@@ -34,6 +35,7 @@ require __DIR__ . '/auth.php';
 Route::middleware('auth')->group(function () {
 
     Route::resources([
-        'users' => UserController::class,
+        'users'     => UserController::class,
+        'projects'  => ProjectController::class,
     ]);
 });
