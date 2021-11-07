@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\ProjectResource;
 use App\Models\Project;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -15,7 +16,7 @@ class ProjectController extends Controller
             ->getQuery();
 
         return Inertia::render('Project/Index', [
-            'projects' => $projects->paginate(request()->perpage ?? 100)->onEachSide(1)->appends(request()->input()),
+            'projects' => ProjectResource::collection($projects->paginate(request()->perpage ?? 100)->onEachSide(1)->appends(request()->input())),
             'filters' => $this->getFilterProperty(),
         ]);
     }
@@ -38,8 +39,10 @@ class ProjectController extends Controller
 
     public function show(Project $project)
     {
+        ProjectResource::withoutWrapping();
+        
         return Inertia::render('Project/Show', [
-            'project' => $project,
+            'project' => new ProjectResource($project),
         ]);
     }
 

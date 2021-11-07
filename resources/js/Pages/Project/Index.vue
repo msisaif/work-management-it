@@ -12,7 +12,7 @@
             </a>
         </div>
 
-        <DataTable :collections="projects" :filters="filters" :dateFilter="true" :serialColumn="true">
+        <DataTable :collections="projects" :filters="filters" :serialColumn="true">
             <template #head>
                 <th class="py-3 px-2 text-left">ID</th>
                 <th class="py-3 px-2 text-left">Nikname</th>
