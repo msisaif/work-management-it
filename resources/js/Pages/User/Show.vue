@@ -14,37 +14,17 @@
         
         <div class="overflow-auto bg-white border">
             <table class="table-auto">
-                <tr class="bg-blue-600 text-sm leading-normal">
-                    <th class="p-2 text-right bg-gray-200 uppercase">ID</th>
-                    <td class="p-2 text-left bg-white">
-                        {{ user.id }}
-                    </td>
-                </tr>
-                <tr class="bg-blue-600 text-sm leading-normal">
-                    <th class="p-2 text-right bg-gray-200 uppercase">Name</th> 
-                    <td class="p-2 text-left bg-white">
-                        {{ user.name }}
-                    </td>
-                </tr>
-                <tr class="bg-blue-600 text-sm leading-normal">
-                    <th class="p-2 text-right bg-gray-200 uppercase">Email</th> 
-                    <td class="p-2 text-left bg-white">
-                        {{ user.email }}
-                    </td>
-                </tr>
-                <tr class="bg-blue-600 text-sm leading-normal">
-                    <th class="p-2 text-right bg-gray-200 uppercase">Action</th> 
-                    <td class="p-2 text-left bg-white">
-                        <div class="flex justify-start items-center gap-1 md:gap-2">
-                            <Link :href="route('users.edit', user.id)" title="Edit" class="flex justify-center items-center">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                                    <path d="M17.414 2.586a2 2 0 00-2.828 0L7 10.172V13h2.828l7.586-7.586a2 2 0 000-2.828z" />
-                                    <path fill-rule="evenodd" d="M2 6a2 2 0 012-2h4a1 1 0 010 2H4v10h10v-4a1 1 0 112 0v4a2 2 0 01-2 2H4a2 2 0 01-2-2V6z" clip-rule="evenodd" />
-                                </svg>
-                            </Link>
-                        </div>
-                    </td>
-                </tr>
+                <ShowTableRow heading="ID">{{ user.id }}</ShowTableRow>
+
+                <ShowTableRow heading="Name">{{ user.name }}</ShowTableRow>
+
+                <ShowTableRow heading="Email">{{ user.email }}</ShowTableRow>
+
+                <ShowTableRow heading="Action">
+                    <div class="flex justify-start items-center gap-1 md:gap-2">
+                        <ActionButtonEdit :href="route('users.edit', user.id)" />
+                    </div>
+                </ShowTableRow>
             </table>
         </div>
     </AppLayout>
@@ -53,12 +33,16 @@
 <script>
 import AppLayout from "@/Layouts/App.vue";
 import { Head, Link } from "@inertiajs/inertia-vue3";
+import ShowTableRow from "@/Components/ShowTableRow.vue";
+import ActionButtonEdit from "@/Components/ActionButtonEdit.vue";
 
 export default {
     components: {
         AppLayout,
         Head,
         Link,
+        ShowTableRow,
+        ActionButtonEdit,
     },
     props: {
         user: { type: Object, default: {} },

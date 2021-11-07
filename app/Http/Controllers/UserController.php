@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\UserResource;
 use App\Models\User;
 use App\Traits\DateFilter;
 use Illuminate\Http\Request;
@@ -16,11 +17,12 @@ class UserController extends Controller
     public function index()
     {
         $users = $this->setQuery(User::query())
-            ->search()->filter()->dateFilter()
+            ->search()->filter()
+            ->dateFilter()
             ->getQuery();
 
         return Inertia::render('User/Index', [
-            'users' => $users->paginate(request()->perpage ?? 100)->onEachSide(1)->appends(request()->input()),
+            'users' => UserResource::collection($users->paginate(request()->perpage ?? 100)->onEachSide(1)->appends(request()->input())),
             'filters' => $this->getFilterProperty(),
         ]);
     }
@@ -45,8 +47,10 @@ class UserController extends Controller
 
     public function show(User $user)
     {
+        UserResource::withoutWrapping();
+
         return Inertia::render('User/Show', [
-            'user' => $user,
+            'user' => new UserResource($user),
         ]);
     }
 
@@ -89,16 +93,7 @@ class UserController extends Controller
 
     protected function filter()
     {
-        $this->getQuery()
-            ->when(isset(request()->email_verified_status), function ($query) {
-                if (request()->email_verified_status == 1) {
-                    $query->whereNotNull('email_verified_at');
-                } 
-                
-                if (request()->email_verified_status == 0) {
-                    $query->whereNull('email_verified_at');
-                }
-            });
+        $this->getQuery();
 
         return $this;
     }
@@ -106,10 +101,7 @@ class UserController extends Controller
     protected function getFilterProperty()
     {
         return [
-            'email_verified_status' => [
-                1 => 'Email Verified',
-                0 => 'Email Not Verified',
-            ]
+            //
         ];
     }
     
