@@ -14,10 +14,13 @@
                 <Input id="email" type="email" class="mt-1 block w-full" v-model="form.email" required autocomplete="username" />
             </div>
 
-            <slot :user="user" />
-
-            <div class="flex items-center justify-end mt-4">
-                <Button class="ml-4" :class="{ 'opacity-25': form.processing }" :disabled="form.processing">
+            <hr class="w-full my-4">
+            
+            <div class="flex items-center justify-between">
+                <div class="">
+                    <GoToList :href="route('issues.index')"/>
+                </div>
+                <Button class="" :class="{ 'opacity-25': form.processing }" :disabled="form.processing">
                     {{ buttonValue }}
                 </Button>
             </div>
@@ -30,6 +33,7 @@ import Button from '@/Components/Button.vue';
 import Input from '@/Components/Input.vue';
 import Label from '@/Components/Label.vue';
 import ValidationErrors from '@/Components/ValidationErrors.vue';
+import GoToList from '@/Components/GoToList.vue';
 
 export default {
     components: {
@@ -37,6 +41,7 @@ export default {
         Input,
         Label,
         ValidationErrors,
+        GoToList,
     },
 
     props: {

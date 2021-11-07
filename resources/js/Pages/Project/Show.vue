@@ -55,18 +55,24 @@
                 </tr>
             </table>
         </div>
+
+        <div class="w-full mt-4 flex">
+            <GoToList :href="route('projects.index')"/>
+        </div>
     </AppLayout>
 </template>
 
 <script>
 import AppLayout from "@/Layouts/App.vue";
 import { Head, Link } from "@inertiajs/inertia-vue3";
+import GoToList from '@/Components/GoToList.vue';
 
 export default {
     components: {
         AppLayout,
         Head,
         Link,
+        GoToList,
     },
     props: {
         project: { type: Object, default: {} },

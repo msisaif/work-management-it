@@ -111,6 +111,10 @@ export default {
         this.dateFrom = this.request.from || '';
 
         this.dateTo = this.request.to || '';
+
+        this.search = this.request.search || '';
+
+        localStorage.setItem('historyOfList', this.route(this.routeName || this.route().current()));
     },
     data() {
         return {
@@ -134,9 +138,13 @@ export default {
 
             this.data['to'] = this.dateTo;
 
-            this.data['sort_by'] = this.sortBy;
+            this.data['search'] = this.search;
 
-            this.$inertia.get(this.route((this.routeName || this.route().current()), this.clean(this.data)), {}, { preserveState: true })
+            let url = this.route((this.routeName || this.route().current()), this.clean(this.data));
+
+            localStorage.setItem('historyOfList', url);
+
+            this.$inertia.get(url, {}, { preserveState: true });
         },
         clean(obj) {
             for (var propName in obj) {

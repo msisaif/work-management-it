@@ -27,6 +27,10 @@
                 </ShowTableRow>
             </table>
         </div>
+
+        <div class="w-full mt-4 flex">
+            <GoToList :href="route('users.index')"/>
+        </div>
     </AppLayout>
 </template>
 
@@ -35,6 +39,7 @@ import AppLayout from "@/Layouts/App.vue";
 import { Head, Link } from "@inertiajs/inertia-vue3";
 import ShowTableRow from "@/Components/ShowTableRow.vue";
 import ActionButtonEdit from "@/Components/ActionButtonEdit.vue";
+import GoToList from '@/Components/GoToList.vue';
 
 export default {
     components: {
@@ -43,6 +48,7 @@ export default {
         Link,
         ShowTableRow,
         ActionButtonEdit,
+        GoToList,
     },
     props: {
         user: { type: Object, default: {} },
