@@ -13,5 +13,10 @@ class Project extends Model
     protected $guarded = [];
 
     public $timestamps = false;
+
+    public function scopeActive($query, $active = 1)
+    {
+        return $query->where('active', $active);
+    }
     
 }

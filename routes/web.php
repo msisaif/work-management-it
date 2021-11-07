@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\IssueController;
 use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\UserController;
 use Illuminate\Foundation\Application;
@@ -37,5 +38,6 @@ Route::middleware('auth')->group(function () {
     Route::resources([
         'users'     => UserController::class,
         'projects'  => ProjectController::class,
+        'issues'    => IssueController::class,
     ]);
 });

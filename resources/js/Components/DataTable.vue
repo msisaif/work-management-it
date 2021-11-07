@@ -41,8 +41,8 @@
         </div>
     </div>
 
-    <div v-if="collections.total" class="w-full p-1">
-        <paginator-links :collections="collections" />
+    <div v-if="collections.meta.total && topLinks" class="w-full p-1">
+        <PaginatorLinks :collections="collections" />
     </div>
 
     <div class="overflow-auto relative">
@@ -59,13 +59,13 @@
 
                 <tr v-for="(item, index) in collections.data" :key="item.id" class="border-b border-gray-200 hover:bg-gray-50">
                     <td v-if="serialColumn" class="py-3 px-2 text-left sticky left-0 bg-white">
-                        {{ collections.from + index }}
+                        {{ collections.meta.from + index }}
                     </td>
 
                     <slot :item="item" />
                 </tr>
 
-                <tr v-if="! collections.total" class="border-b border-gray-200 hover:bg-gray-50">
+                <tr v-if="! collections.meta.total" class="border-b border-gray-200 hover:bg-gray-50">
                     <td colspan="100" class="py-3 px-2 text-center text-red-500">
                         No data found !!
                     </td>
@@ -74,8 +74,8 @@
         </table>
     </div>
 
-    <div v-if="collections.total" class="w-full p-1">
-        <paginator-links :collections="collections" />
+    <div v-if="collections.meta.total && bottomLinks" class="w-full p-1">
+        <PaginatorLinks :collections="collections" />
     </div>
 
 </template>
@@ -100,6 +100,8 @@ export default {
         dateFilter: { type: Boolean, default: false },
         serialColumn: { type: Boolean, default: true},
         routeName: { type: String, default: null},
+        topLinks: { type: Boolean, default: false},
+        bottomLinks: { type: Boolean, default: true},
     },
     created() {
         Object.entries(this.filters).forEach( ([key, value]) => {
@@ -112,7 +114,7 @@ export default {
     },
     data() {
         return {
-            perpage: this.collections.per_page,
+            perpage: this.collections.meta.per_page,
             search: '',
             filterData: {},
             data: {},

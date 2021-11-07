@@ -8,6 +8,9 @@
     <NavLink :href="route('projects.index')" :active="route().current('projects.*')">
         Projects
     </NavLink>
+    <NavLink :href="route('issues.index')" :active="route().current('issues.*')">
+        Issues
+    </NavLink>
 </template>
 
 <script>
